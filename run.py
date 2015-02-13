@@ -4,9 +4,9 @@ import math
 #from matplotlib import pylab
 from bisect import bisect
 image_file=Image.open("testpng.png")
-image_file=image_file.resize((60, 50), Image.ANTIALIAS)
+image_file=image_file.resize((160, 70), Image.ANTIALIAS)
 image_file=image_file.convert("L")
-weights = ["  ", ".", "-" "/", "*", "%", "#"]
+weights = " .-/*%#"
 myascii=""
 for y in range(0,image_file.size[1]):
     for x in range(0,image_file.size[0]):
