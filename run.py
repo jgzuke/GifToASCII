@@ -1,11 +1,17 @@
 from PIL import Image
 import math
+import random
 from bisect import bisect
-image_file=Image.open("testpng.png")
-image_file.load()
+image_file = Image.open("test.png")
+image_file.convert("RGBA")
+pixel_data = image_file.load()
+if image_file.mode == "RGBA":
+    for y in xrange(image_file.size[1]):
+        for x in xrange(image_file.size[0]):
+            if pixel_data[x, y][3] < 255:
+                pixel_data[x, y] = (255, 255, 255, 255)
 image_file=image_file.convert("L")
-image_file.save('result.png')
-weights = [" ", ".'", "_-^", "+=_-", "%?[]\/*", "#", "#", "#", "#"]
+weights = [" ", ".'", ".-'", "_-^", "%?[]\/*", "#", "#", "#"]
 
 a = [False, False, False]#"000"
 b = [True, True, True]#"111"
@@ -18,16 +24,15 @@ h = [True, True, False]#"110"
 
 bools =[[],
         [[a,a,a,a,a,a,a,a,b],[b,a,a,a,a,a,a,a,a]],
+        [[a,a,a,a,a,a,a,a,b],[a,a,a,a,b,a,a,a,a],[b,a,a,a,a,a,a,a,a]],
         [[a,a,a,a,a,a,a,a,b],[a,a,a,a,b,a,a,a,a],[c,f,f,a,a,a,a,a,a]],
-        [[a,a,a,c,b,c,a,a,a],[a,a,a,b,a,b,a,a,a],[a,a,a,a,a,a,a,a,b],[a,a,a,a,b,a,a,a,a]],
         [[h,h,h,b,b,b,g,g,g],[b,b,g,g,c,c,c,c,c],[b,b,d,d,d,d,d,b,b],[b,b,e,e,e,e,e,b,b],[d,d,d,c,c,c,e,e,e],[e,e,e,c,c,c,d,d,d],[a,a,a,b,b,b,a,a,a]],
-        [[h,b,b,b,b,b,b,b,g],[b,b,b,b,b,b,b,b,b]],
-        [[g,b,b,b,b,b,b,b,h],[h,b,b,b,b,b,b,b,g]],
-        [[g,b,b,b,b,b,b,b,h],[h,b,b,b,b,b,b,b,g]],
-        [[g,b,b,b,b,b,b,b,h],[h,b,b,b,b,b,b,b,g]]]
+        [],
+        [],
+        []]
 myascii=""
-for j in range((image_file.size[1]/11) - 1):
-    for i in range((image_file.size[0]/5) - 1):
+for j in range((image_file.size[1]/11)):
+    for i in range((image_file.size[0]/5)):
         weight = 0
         for y in range(11):
             for x in range(5):
@@ -57,7 +62,9 @@ for j in range((image_file.size[1]/11) - 1):
                 if matchAmount >= largestMatchAmount:
                     largestMatchAmount = matchAmount
                     best += possibilities[m]
-            myascii+=best
+            char = best[random.randint(0, len(best)-1)]
+            myascii+=char
+
     myascii+="\n"
  
 print myascii
