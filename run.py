@@ -92,17 +92,18 @@ def ImageToACSII(name, lines=40, lighten=0, contrast=2):
 
 def GIFToACSII(name, lines=40, lighten=0, contrast=2, loops = 1):
     gif = Image.open(name)
+    ASCIIs = []
+    nframes = 0
+    while gif:
+        frame = modImage(gif, lines, lighten, contrast)
+        ASCIIs.append(getASCII(frame))
+        nframes += 1
+        try:
+            gif.seek(nframes)
+        except EOFError:
+            break;
     for x in xrange(loops):
-        nframes = 0
-        while gif:
-            frame = modImage(gif, lines, lighten, contrast)
-            print getASCII(frame)
-            nframes += 1
-            try:
-                gif.seek(nframes)
-            except EOFError:
-                break;
-        gif.seek(0)
+        for y in xrange(nframes):
+            print ASCIIs[y]
 
-#ImageToACSII("jo2.png", 100, 0, 4) 
-GIFToACSII("snoopy.gif", 20, 0, 1, 3)
+GIFToACSII("gif.gif", 30, 0, 1, 1)
