@@ -23,6 +23,7 @@ bools =[[],
 def getASCII(image):
     myascii="\n"
     for j in range((image.size[1]/10)):
+        myLine = ""
         for i in range((image.size[0]/5)):
             weight = 0
             for y in range(9):
@@ -36,7 +37,7 @@ def getASCII(image):
 
             best = ""
             if len(possibilities) == 1:
-                myascii+=possibilities[0]
+                myLine+=possibilities[0]
             else:
                 largestMatchAmount = 0
                 for m in range(len(possibilities)):
@@ -54,8 +55,8 @@ def getASCII(image):
                         largestMatchAmount = matchAmount
                         best += possibilities[m]
                 char = best[random.randint(0, len(best)-1)]
-                myascii+=char
-        myascii+="\n"
+                myLine+=char
+        myascii += myLine + "\n"
     myascii+="\n"
     return myascii
 
@@ -66,11 +67,11 @@ def resize(image, lines):
     return image.resize((hsize,lines), Image.ANTIALIAS)
 
 def removeAlpha(image):
-    image.load()  # needed for split()
+    image.load()
     image.convert("RGBA")
     if image.mode == "RGBA":
         background = Image.new('RGB', image.size, (255, 255, 255))
-        background.paste(image, mask=image.split()[3])  # 3 is the alpha channel
+        background.paste(image, mask=image.split()[3])
         return background.convert("L")
     else:
         return image.convert("L")
@@ -106,4 +107,6 @@ def GIFToACSII(name, lines=40, lighten=0, contrast=2, loops = 1):
         for y in xrange(nframes):
             print ASCIIs[y]
 
-GIFToACSII("gif.gif", 30, 0, 1, 1)
+
+#ImageToACSII("icon.ico", 30, 0, 1)
+GIFToACSII("gif.gif", 20, 0, 1, 20)
